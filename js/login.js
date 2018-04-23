@@ -1,5 +1,6 @@
 
 
+
 function Error()
 {
   document.getElementById('error_login').style.display="true";
@@ -11,6 +12,9 @@ function login(){
 
 
 $(document).ready(function(){
+    
+    //import swal from 'sweetalert2'
+//var swal = require('sweetalert2')
    // alert("pato");
     
   
@@ -30,7 +34,7 @@ $('#btnlogin').click(function(event){
             if ($.trim(user).length>0 && $.trim(pass).length>0) {
 
               $.ajax({
-                  url: 'login_conn2.php',
+                  url: '../PHP/Login/login_conn2.php',
                   type: 'POST',
                   data: form,
               }).done(function(form){
@@ -43,7 +47,9 @@ $('#btnlogin').click(function(event){
             else {
 
             //$("#error").html("<span style='color:#cc0000'>Error:</span><span style='color:#cc0000'> Invalid username or password. </span>");
-                alert("Error");
+                //alert("Error");
+                $("#ex1").modal('show');
+                 
             }
               });
 
@@ -67,7 +73,7 @@ $('#btnlogin').click(function(event){
             if ($.trim(user).length>0 && $.trim(pass).length>0) {
 
               $.ajax({
-                  url: 'login_conn.php',
+                  url: '../PHP/Login/login_conn.php',
                   type: 'POST',
                   data: form,
               }).done(function(form){
@@ -80,7 +86,9 @@ $('#btnlogin').click(function(event){
             else {
 
             //$("#error").html("<span style='color:#cc0000'>Error:</span><span style='color:#cc0000'> Invalid username or password. </span>");
-                alert("Error");
+               // alert("Error");
+                   $("#ex1").modal('show');
+                //swal("Hello world!");
             }
               });
 

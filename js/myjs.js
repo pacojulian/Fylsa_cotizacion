@@ -1,26 +1,49 @@
 $(document).ready(function () {
- 
-    
+
+
     //alert("pato");
     var usuario = document.getElementById("usuario").innerHTML;
-   
-   
-    
+
+
+
    // alert(usuario);
 
     if (usuario === "A001")
         {
             //alert("pato1");
-           
+
              $('#import').show();
+            $('#user').show();
+
         } else {
         //alert("pato2");
         $('#import').hide();
+            $('#user').hide();
     }
-   
     
+    /*
+    *Cargar la Nomina
+    */
     
+    cargar_nomina();
+    
+
+
+
 });
+
+function cargar_nomina(){
+    
+        $.ajax({
+                  url: 'DB/db_nomina.php',
+                  type: 'POST',
+              }).done(function(response){
+            //alert(form);
+            $("#tbresponse").html(response);
+            //alert(response);
+              });
+
+}
 var i;
 var totalt=0;
 
@@ -28,9 +51,9 @@ $('#tblistado tbody').on('click',"tr", function(){
     var dato="";
  for(i=1;i<=5;i++){
        dato = dato + $(this).find('td:nth-child('+i+')').html()+"_";
-     
+
  }
-    alert(dato);
+    //alert(dato);
     //alert(res[0]);
 
 var res = dato.split("_");
@@ -39,19 +62,40 @@ var res = dato.split("_");
      document.getElementById("um").value = res[2];
       document.getElementById("pmo").value = res[3];
      document.getElementById("precio").value = res[4];
-    
-    
-    
-    
+
+
+
+
 //alert(res[0]);
 });
 
-  
+/*
+funcion para saber que empleado seleccionaste
+*/
+$('#tbusuario tbody').on('click',"tr", function(){
+    var dato="";
+ for(i=1;i<=3;i++){
+       dato = dato + $(this).find('td:nth-child('+i+')').html()+"_";
+
+ }
+    //alert(dato);
+    //alert(res[0]);
+
+
+});
+
+
+
+
+
+
+
+
 
 function myFunction() {
-    
+
    // alert("pato");
-  // Declare variables 
+  // Declare variables
   var input, filter, table, tr, td, i;
   input = document.getElementById("busqueda");
   filter = input.value.toUpperCase();
@@ -67,7 +111,7 @@ function myFunction() {
       } else {
         tr[i].style.display = "none";
       }
-    } 
+    }
   }
 }
 
@@ -75,7 +119,7 @@ function myFunction() {
 
 
 function calcularp(){
-  
+
     var id;
     var clave = document.getElementById("clave1").value;
      var descripcion = document.getElementById("descripcion").value;
@@ -85,13 +129,22 @@ function calcularp(){
     var sum = document.getElementById("sum").value;
        var nFilas = $("#tbcarrito tr").length;
 
-   
-   
+
+
       //alert(sum);
-// aqui van todas las funciones de precio 
+// aqui van todas las funciones de precio
     var total=0;
-    
-    
+
+
+
+if(cantidad == 0)
+{
+          alert("Cantidad esta vacio");
+            /* $("#ex2").modal('show');
+                $("#ex2").css("z-index", "1500");*/
+
+}else{
+
    switch (sum)
            {
        case "Suministro":
@@ -104,13 +157,13 @@ function calcularp(){
            total= (cantidad * precio)+(cantidad * pmo);
            break;
    }
-    
+
      var table = document.getElementById("tbcarrito");
-    
+
     var row = table.insertRow(1);
     var cell1 = row.insertCell(0);
-    
-    
+
+
     var cell2 = row.insertCell(1);
      var cell3 = row.insertCell(2);
     var cell4 = row.insertCell(3);
@@ -124,42 +177,46 @@ function calcularp(){
      cell4.innerHTML = "<input type='hidden' name='tablacantidad"+nFilas+"' value='"+cantidad+"'>"+cantidad;
     cell5.innerHTML=precio;
     cell6.innerHTML = pmo;
-      cell7.innerHTML ="<input type='hidden' name='tablaprecio"+nFilas+"' value='"+total+"'>"+total;
-    
-    
+      cell7.innerHTML ="<input type='hidden' name='tablaprecio"+nFilas+"' value='"+total.toFixed(2)+"'>"+total.toFixed(2);
+
+
  document.getElementById("tam").value = nFilas;
-    
+
        totalt =totalt + total;
-    
-    document.getElementById("totalt").value=totalt;
-    
+
+    document.getElementById("totalt").value=totalt.toFixed(2);
+
     alert("Se agrego el siguiente producto:"+"\n"+"Descripcion: "+descripcion+"\n"+"Suministro/Instalacion: "+sum+"\n"+"Cantidad: "+cantidad);
-    
+
 
  document.getElementById("clave1").value="";
  document.getElementById("descripcion").value="";
  document.getElementById("precio").value="";
     document.getElementById("cant").value="";
   document.getElementById("pmo").value="";
-   
+     document.getElementById("um").value="";
+
+
+}
+
 }
  function key_down(e) {
     if(e.keyCode === 12) {
       alert("pato");
-        
+
     }
   }
 
 
 function buscar(){
      var search = $("input#busqueda").val();
-    
+
      var form = 'search='+search;
-    
+
     if(search!="")
         {
               $.ajax({
-                  url: 'listado.php',
+                  url: 'Cotizacion/listado.php',
                   type: 'POST',
                   data: form,
               }).done(function(form){
@@ -170,6 +227,14 @@ function buscar(){
     else{
        alert("algun campo esta vacio")
     }
- 
+
+
+}
+
+function borrar(){
+
+
+             $.ajax({type: "GET",url: "Listado/truncate.php"});
+
 
 }
